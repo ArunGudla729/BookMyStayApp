@@ -82,7 +82,7 @@ System initialized successfully.
 ---
 
 ## Author
-Developer
+Arun
 
 ## Version
 1.0
