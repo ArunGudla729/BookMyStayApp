@@ -1,132 +1,151 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * ===============================================================
- * ABSTRACT CLASS - Room
- * ===============================================================
+ * ============================================================
+ * CLASS - Room
+ * ============================================================
+ * Represents a room with details like beds, size and price.
+ */
+class Room {
+    private String type;
+    private int beds;
+    private int size;
+    private double price;
+
+    public Room(String type, int beds, int size, double price) {
+        this.type = type;
+        this.beds = beds;
+        this.size = size;
+        this.price = price;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getBeds() {
+        return beds;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+}
+
+/**
+ * ============================================================
+ * CLASS - RoomInventory
+ * ============================================================
+ * Stores availability of rooms (read-only access).
+ */
+class RoomInventory {
+
+    private Map<String, Integer> roomAvailability = new HashMap<>();
+
+    public RoomInventory() {
+        roomAvailability.put("Single", 5);
+        roomAvailability.put("Double", 3);
+        roomAvailability.put("Suite", 2);
+    }
+
+    public Map<String, Integer> getRoomAvailability() {
+        return roomAvailability;
+    }
+}
+
+/**
+ * ============================================================
+ * CLASS - RoomSearchService
+ * ============================================================
  *
- * Use Case 2: Basic Room Types & Static Availability
+ * Use Case 4: Room Search & Availability Check
  *
  * Description:
- * This abstract class represents a generic hotel room.
+ * This class provides search functionality
+ * for guests to view available rooms.
  *
- * It models attributes that are intrinsic to a room type
- * and remain constant regardless of availability.
+ * It reads room availability from inventory
+ * and room details from Room objects.
  *
- * Inventory-related concerns are intentionally excluded.
+ * No inventory mutation or booking logic
+ * is performed in this class.
  *
- * @version 2.1
+ * @version 4.0
  */
-
-abstract class Room {
-
-    /** Number of beds available in the room. */
-    protected int numberOfBeds;
-
-    /** Total size of the room in square feet. */
-    protected int squareFeet;
-
-    /** Price charged per night for this room type. */
-    protected double pricePerNight;
+class RoomSearchService {
 
     /**
-     * Constructor used by child classes to
-     * initialize common room attributes.
+     * Displays available rooms along with
+     * their details and pricing.
      *
-     * @param numberOfBeds number of beds in the room
-     * @param squareFeet total room size
-     * @param pricePerNight cost per night
+     * This method performs read-only access
+     * to inventory and room data.
+     *
+     * @param inventory centralized room inventory
+     * @param singleRoom single room definition
+     * @param doubleRoom double room definition
+     * @param suiteRoom suite room definition
      */
-    public Room(int numberOfBeds, int squareFeet, double pricePerNight) {
-        this.numberOfBeds = numberOfBeds;
-        this.squareFeet = squareFeet;
-        this.pricePerNight = pricePerNight;
-    }
+    public void searchAvailableRooms(
+            RoomInventory inventory,
+            Room singleRoom,
+            Room doubleRoom,
+            Room suiteRoom) {
 
-    /** Displays room details */
-    public void displayRoomDetails() {
-        System.out.println("Beds: " + numberOfBeds);
-        System.out.println("Size: " + squareFeet + " sqft");
-        System.out.println("Price per night: " + pricePerNight);
+        Map<String, Integer> availability = inventory.getRoomAvailability();
+
+        System.out.println("Room Search\n");
+
+        // Check and display Single Room availability
+        if (availability.get("Single") > 0) {
+            System.out.println("Single Room:");
+            System.out.println("Beds: " + singleRoom.getBeds());
+            System.out.println("Size: " + singleRoom.getSize() + " sqft");
+            System.out.println("Price per night: " + singleRoom.getPrice());
+            System.out.println("Available: " + availability.get("Single") + "\n");
+        }
+
+        // Check and display Double Room availability
+        if (availability.get("Double") > 0) {
+            System.out.println("Double Room:");
+            System.out.println("Beds: " + doubleRoom.getBeds());
+            System.out.println("Size: " + doubleRoom.getSize() + " sqft");
+            System.out.println("Price per night: " + doubleRoom.getPrice());
+            System.out.println("Available: " + availability.get("Double") + "\n");
+        }
+
+        // Check and display Suite Room availability
+        if (availability.get("Suite") > 0) {
+            System.out.println("Suite Room:");
+            System.out.println("Beds: " + suiteRoom.getBeds());
+            System.out.println("Size: " + suiteRoom.getSize() + " sqft");
+            System.out.println("Price per night: " + suiteRoom.getPrice());
+            System.out.println("Available: " + availability.get("Suite"));
+        }
     }
 }
 
-
 /**
- * ===============================================================
- * CLASS - SingleRoom
- * ===============================================================
+ * ============================================================
+ * MAIN CLASS - UseCase4RoomSearch
+ * ============================================================
  *
- * Represents a single room in the hotel.
- *
- * @version 2.1
- */
-class SingleRoom extends Room {
-
-    /**
-     * Initializes a SingleRoom with
-     * predefined attributes.
-     */
-    public SingleRoom() {
-        super(1, 250, 1500.0);
-    }
-}
-
-
-/**
- * ===============================================================
- * CLASS - DoubleRoom
- * ===============================================================
- *
- * Represents a double room in the hotel.
- *
- * @version 2.1
- */
-class DoubleRoom extends Room {
-
-    /**
-     * Initializes a DoubleRoom with
-     * predefined attributes.
-     */
-    public DoubleRoom() {
-        super(2, 400, 2500.0);
-    }
-}
-
-
-/**
- * ===============================================================
- * CLASS - SuiteRoom
- * ===============================================================
- *
- * Represents a suite room in the hotel.
- *
- * @version 2.1
- */
-class SuiteRoom extends Room {
-
-    /**
-     * Initializes a SuiteRoom with
-     * predefined attributes.
-     */
-    public SuiteRoom() {
-        super(3, 750, 5000.0);
-    }
-}
-
-
-/**
- * ===============================================================
- * MAIN CLASS - UseCase2RoomInitialization
- * ===============================================================
+ * Use Case 4: Room Search & Availability Check
  *
  * Description:
- * This class demonstrates room initialization
- * using domain models before introducing
- * centralized inventory management.
+ * This class demonstrates how guests
+ * can view available rooms without
+ * modifying inventory data.
  *
- * Availability is represented using
- * simple variables to highlight limitations.
+ * The system enforces read-only access
+ * by design and usage discipline.
  *
- * @version 2.1
+ * @version 4.0
  */
 public class BookMyStayApp {
 
@@ -137,31 +156,23 @@ public class BookMyStayApp {
      */
     public static void main(String[] args) {
 
-        System.out.println("Hotel Room Initialization\n");
+        // Create room definitions
+        Room singleRoom = new Room("Single", 1, 250, 1500.0);
+        Room doubleRoom = new Room("Double", 2, 400, 2500.0);
+        Room suiteRoom = new Room("Suite", 3, 750, 5000.0);
 
-        // Creating room objects
-        SingleRoom singleRoom = new SingleRoom();
-        DoubleRoom doubleRoom = new DoubleRoom();
-        SuiteRoom suiteRoom = new SuiteRoom();
+        // Create inventory
+        RoomInventory inventory = new RoomInventory();
 
-        // Static availability
-        int singleAvailable = 5;
-        int doubleAvailable = 3;
-        int suiteAvailable = 2;
+        // Create search service
+        RoomSearchService searchService = new RoomSearchService();
 
-        // Single Room Details
-        System.out.println("Single Room:");
-        singleRoom.displayRoomDetails();
-        System.out.println("Available: " + singleAvailable + "\n");
-
-        // Double Room Details
-        System.out.println("Double Room:");
-        doubleRoom.displayRoomDetails();
-        System.out.println("Available: " + doubleAvailable + "\n");
-
-        // Suite Room Details
-        System.out.println("Suite Room:");
-        suiteRoom.displayRoomDetails();
-        System.out.println("Available: " + suiteAvailable);
+        // Perform search
+        searchService.searchAvailableRooms(
+                inventory,
+                singleRoom,
+                doubleRoom,
+                suiteRoom
+        );
     }
 }

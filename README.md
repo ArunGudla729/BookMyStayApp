@@ -1,70 +1,68 @@
-# BookMyStayApp
-# Hotel Booking Management System
+# Room Search & Availability System (Use Case 4)
 
-## Use Case 2: Basic Room Types & Static Availability
+## 📌 Overview
+This project implements a **Room Search & Availability Check system** for a hotel.
 
-### Overview
-This module demonstrates the initialization of different hotel room types using Object-Oriented Programming concepts in Java.
+It allows users (guests) to:
+- View available rooms
+- See room details (beds, size, price)
+- Check availability count
 
-The system models three types of rooms:
-- Single Room
-- Double Room
-- Suite Room
-
-Each room type extends a base abstract class called `Room`.
+⚠️ This system is **read-only** and does NOT perform booking.
 
 ---
 
-## Concepts Demonstrated
+## 🏗️ Architecture
 
-- Abstract Classes
-- Inheritance
-- Constructors
-- Method Reuse
-- Basic Object-Oriented Design
-
----
-
-## Project Structure
-
-
-Room.java
-SingleRoom.java
-DoubleRoom.java
-SuiteRoom.java
-UseCase2RoomInitialization.java
-
+### 1. Room Class
+Represents room details:
+- Type (Single, Double, Suite)
+- Beds
+- Size (sqft)
+- Price per night
 
 ---
 
-## How to Compile
-
-Open terminal in the folder and run:
-
-
-javac *.java
+### 2. RoomInventory Class
+Stores room availability using:
+HashMap<String, Integer>
 
 
-or compile main file:
+Example:
 
-
-javac UseCase2RoomInitialization.java
+Single → 5
+Double → 3
+Suite → 2
 
 
 ---
 
-## How to Run
+### 3. RoomSearchService Class
+Handles:
+- Fetching availability
+- Displaying room details
 
-
-java UseCase2RoomInitialization
-
+✔ Read-only access  
+❌ No booking or modification
 
 ---
 
-## Expected Output
+### 4. Main Class (UseCase4RoomSearch)
+- Creates objects
+- Calls search service
+- Runs the program
 
+---
 
-Hotel Room Initialization
+## ▶️ How to Compile & Run
+
+### Step 1: Compile
+
+javac UseCase4RoomSearch.java
+Step 2: Run
+java UseCase4RoomSearch
+📊 Sample Output
+Room Search
 
 Single Room:
 Beds: 1
@@ -83,16 +81,28 @@ Beds: 3
 Size: 750 sqft
 Price per night: 5000.0
 Available: 2
+🎯 Key Concepts Used
 
+Object-Oriented Programming (OOP)
 
----
+Encapsulation
 
-## Version
+Separation of Concerns
 
-2.1
+Read-only design principle
 
----
+HashMap (Data Structure)
 
-## Author
+🚀 Future Enhancements
 
-Arun
+Add booking system
+
+Add user login
+
+Add database integration
+
+Add REST API
+
+📌 Version
+
+v4.0
