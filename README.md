@@ -1,98 +1,70 @@
-# BookMyStayApp
-# Hotel Booking Management System
+# Room Search & Availability Check (UC4)
 
-## Use Case 2: Basic Room Types & Static Availability
-
-### Overview
-This module demonstrates the initialization of different hotel room types using Object-Oriented Programming concepts in Java.
-
-The system models three types of rooms:
-- Single Room
-- Double Room
-- Suite Room
-
-Each room type extends a base abstract class called `Room`.
+## 📌 Overview
+This project implements a **Room Search System** that allows users to:
+- Search rooms by type (Single, Double, Suite)
+- Filter based on size
+- Filter based on price
+- Check availability
 
 ---
 
-## Concepts Demonstrated
-
-- Abstract Classes
-- Inheritance
-- Constructors
-- Method Reuse
-- Basic Object-Oriented Design
-
----
-
-## Project Structure
-
-
-Room.java
-SingleRoom.java
-DoubleRoom.java
-SuiteRoom.java
-UseCase2RoomInitialization.java
-
+## 🧩 Features
+- Inventory-based room storage
+- Filtering logic using multiple conditions
+- Object-Oriented Design (OOPS)
+- Inheritance (Room → Suite)
+- Uses ArrayList for storage
 
 ---
 
-## How to Compile
+## 🏗️ Classes
 
-Open terminal in the folder and run:
+### 1. Room
+- Base class for all rooms
+- Attributes:
+    - type
+    - size
+    - pricePerNight
+    - availability
 
+### 2. Suite
+- Inherits from Room
 
-javac *.java
+### 3. RoomInventory
+- Stores all rooms
+- Provides access to room list
 
-
-or compile main file:
-
-
-javac UseCase2RoomInitialization.java
-
+### 4. RoomSearchService
+- Core logic for searching rooms
+- Filters:
+    - Type
+    - Minimum Size
+    - Maximum Price
+    - Availability
 
 ---
 
-## How to Run
+## ▶️ How to Run
 
+### Step 1: Compile
+```bash
+javac RoomSearchService.java
+Step 2: Run
+java RoomSearchService
+💻 Sample Input
+Enter room type: Suite
+Enter minimum size: 300
+Enter max price: 6000
+📤 Sample Output
+--- Available Rooms ---
 
-java UseCase2RoomInitialization
-
-
----
-
-## Expected Output
-
-
-Hotel Room Initialization
-
-Single Room:
-Beds: 1
-Size: 250 sqft
-Price per night: 1500.0
-Available: 5
-
-Double Room:
-Beds: 2
-Size: 400 sqft
-Price per night: 2500.0
-Available: 3
-
-Suite Room:
-Beds: 3
-Size: 750 sqft
+Room Type: Suite
+Size: 350 sqft
 Price per night: 5000.0
-Available: 2
-
-
----
-
-## Version
-
-2.1
-
----
-
-## Author
-
-Arun
+Available: true
+📚 Concepts Used
+OOPS (Encapsulation, Inheritance)
+Collections (ArrayList)
+Filtering Logic
+Command-line Input
