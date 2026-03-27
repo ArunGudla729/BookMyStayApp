@@ -23,10 +23,10 @@ This project implements a **Room Search System** that allows users to:
 ### 1. Room
 - Base class for all rooms
 - Attributes:
-    - type
-    - size
-    - pricePerNight
-    - availability
+  - type
+  - size
+  - pricePerNight
+  - availability
 
 ### 2. Suite
 - Inherits from Room
@@ -38,10 +38,10 @@ This project implements a **Room Search System** that allows users to:
 ### 4. RoomSearchService
 - Core logic for searching rooms
 - Filters:
-    - Type
-    - Minimum Size
-    - Maximum Price
-    - Availability
+  - Type
+  - Minimum Size
+  - Maximum Price
+  - Availability
 
 ---
 
