@@ -1,47 +1,35 @@
-# Room Search & Availability Check (UC4)
-
-## 📌 Overview
-This project implements a **Room Search System** that allows users to:
-- Search rooms by type (Single, Double, Suite)
-- Filter based on size
-- Filter based on price
-- Check availability
-
 ---
 
 ## 🧩 Features
-- Inventory-based room storage
-- Filtering logic using multiple conditions
-- Object-Oriented Design (OOPS)
-- Inheritance (Room → Suite)
-- Uses ArrayList for storage
+- Booking request representation
+- Queue-based processing
+- Fair scheduling (FIFO)
+- Simple and efficient design
 
 ---
 
 ## 🏗️ Classes
 
-### 1. Room
-- Base class for all rooms
-- Attributes:
-  - type
-  - size
-  - pricePerNight
-  - availability
+### 1. Reservation
+- Represents a booking request
+- Fields:
+  - guestName
+  - roomType
 
-### 2. Suite
-- Inherits from Room
+---
 
-### 3. RoomInventory
-- Stores all rooms
-- Provides access to room list
+### 2. BookingRequestQueue
+- Uses Queue (LinkedList)
+- Methods:
+  - addRequest()
+  - getNextRequest()
+  - hasPendingRequests()
 
-### 4. RoomSearchService
-- Core logic for searching rooms
-- Filters:
-  - Type
-  - Minimum Size
-  - Maximum Price
-  - Availability
+---
+
+### 3. UseCase5BookingRequestQueue
+- Main driver class
+- Simulates booking requests
 
 ---
 
@@ -49,22 +37,19 @@ This project implements a **Room Search System** that allows users to:
 
 ### Step 1: Compile
 ```bash
-javac RoomSearchService.java
-Step 2: Run
-java RoomSearchService
-💻 Sample Input
-Enter room type: Suite
-Enter minimum size: 300
-Enter max price: 6000
-📤 Sample Output
---- Available Rooms ---
+javac UseCase5BookingRequestQueue.java
 
-Room Type: Suite
-Size: 350 sqft
-Price per night: 5000.0
-Available: true
+Step 2: Run
+java UseCase5BookingRequestQueue
+
+📤 Sample Output
+Booking Request Queue:
+Processing booking for Guest: John, Room Type: Single
+Processing booking for Guest: Sneha, Room Type: Double
+Processing booking for Guest: Vamshi, Room Type: Suite
+
 📚 Concepts Used
-OOPS (Encapsulation, Inheritance)
-Collections (ArrayList)
-Filtering Logic
-Command-line Input
+Queue (FIFO)
+Java Collections (LinkedList)
+OOPS (Encapsulation)
+Sequential Processing
