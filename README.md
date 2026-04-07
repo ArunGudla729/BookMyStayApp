@@ -1,42 +1,51 @@
-Book My Stay App – Use Case 7
-Overview
-This use case allows guests to select optional add-on services for an existing reservation. Services are managed separately to avoid modifying core booking or inventory logic.
+# Use Case 8: Booking History & Reporting
 
-Objective
-Attach multiple services to a single reservation
-Map reservation IDs to selected services
-Calculate total add-on cost
-Maintain separation from core booking and inventory
-Features
-Service class representing an add-on offering
-AddOnServiceManager to map reservations to services
-Support for multiple services per reservation
-Total add-on cost calculation
-File Structure
-UseCase7AddOnServiceSelection.java – Contains reservation, service, and manager logic
-How to Compile and Run
-Compile
-javac UseCase7AddOnServiceSelection.java
-Run
-java UseCase7AddOnServiceSelection
-Expected Output
-Welcome to Book My Stay App
-Hotel Booking System v7.0
-Guest: Alice, Room Type: Single Room, Room ID: S-12
-Added service Breakfast to reservation S-12
-Added service Spa Session to reservation S-12
-Added service Airport Pickup to reservation S-12
+## Project Goal
+The primary objective of this use case is to introduce **historical tracking** of confirmed bookings. This provides operational visibility for administrators, enables system audits, and supports reporting. It establishes a **persistence-oriented mindset** by treating in-memory data as long-lived information, preparing the system for future database integration.
 
---- Add-On Services for Reservation S-12 ---
-Service: Breakfast, Cost: 200.0
-Service: Spa Session, Cost: 500.0
-Service: Airport Pickup, Cost: 300.0
-Total Add-On Cost: 1000.0
-Key Concepts Used
-Composition over Inheritance
-Map<String, List> for reservation-service mapping
-Separation of Core and Optional Features
-Cost Aggregation
-Flexible extensibility for new services
-Version
-7.0
+---
+
+## Key Components
+
+
+| Component | Role |
+| :--- | :--- |
+| **Admin (Actor)** | Reviews booking history and reports for operational purposes. |
+| **Booking History** | Maintains a record of confirmed reservations using ordered storage. |
+| **Booking Report Service** | Generates summaries and formatted reports from stored data. |
+
+---
+
+## Architectural Principles Applied
+
+*   **Operational Visibility:** Provides insight into past transactions to understand system usage.
+*   **Ordered Storage:** Uses a `List<Reservation>` to preserve **insertion order**, ensuring a chronological record of events.
+*   **Separation of Concerns:** Data storage (`BookingHistory`) is decoupled from reporting logic (`BookingReportService`).
+*   **Persistence Mindset:** Although the data is stored in-memory, it is treated as an audit trail that persists throughout the application's lifecycle.
+*   **Reporting Readiness:** Structured data allows reports to be generated at any time without reprocessing live booking flows.
+
+---
+
+## How to Run
+
+1.  **Compile the code:**
+    ```bash
+    javac UseCase8BookingHistoryReport.java
+    ```
+2.  **Execute the application:**
+    ```bash
+    java UseCase8BookingHistoryReport
+    ```
+
+---
+
+## Sample Output
+As implemented in the final code, the system generates the following report:
+
+```text
+Booking History and Reporting
+
+Booking History Report
+Guest: Abhi, Room Type: Single
+Guest: Subha, Room Type: Double
+Guest: Vanmathi, Room Type: Suite
