@@ -1,38 +1,34 @@
-# Use Case 10: Booking Cancellation & Inventory Rollback
+# Use Case 11: Concurrent Booking Processing
 
 ## 🎯 Project Goal
-The goal of Use Case 10 is to implement a reliable **Cancellation Mechanism** that maintains system consistency. It ensures that when a booking is voided, the allocated room is immediately returned to the available inventory, and the event is logged in a rollback history.
+The objective of Use Case 11 is to evolve the system into a **Multithreaded Architecture**. By simulating a high-traffic environment, this use case demonstrates how to handle multiple booking requests simultaneously while maintaining **Thread-Safety** to prevent overbooking.
 
 ---
 
 ## 🛠️ Key Components
 
-### 1. Stack-Based Rollback (`Stack<String>`)
-*   **LIFO Principle:** Utilizes a Stack to track released reservation IDs. This follows the **Last-In, First-Out** model, ensuring that the most recent cancellation is always at the top of the history.
-*   **Audit Trail:** Maintains a chronological record of "Released Reservation IDs" for administrative review.
+### 1. The `Runnable` Interface
+*   **Parallel Processing:** Implements `Runnable` in the `ConcurrentBookingProcessor` so that multiple worker threads can run the same logic independently.
+*   **Worker Threads:** Demonstrates the creation, starting, and joining of `Thread` objects to manage the application lifecycle.
 
-### 2. Inventory Restoration Logic
-*   **State Recovery:** Automatically communicates with the `RoomInventory` to increment the room count for the specific type (e.g., Single, Double) being cancelled.
-*   **Real-time Updates:** Provides immediate visibility into updated room availability following a successful rollback.
+### 2. Thread Synchronization (`synchronized`)
+*   **Critical Sections:** Uses synchronized blocks to protect the shared `bookingQueue` and `RoomInventory`.
+*   **Race Condition Prevention:** Ensures that checking room availability and decrementing the count happens as one **Atomic Operation**, preventing two threads from claiming the same last room.
 
-### 3. Data Integrity
-*   **Mapping:** Ensures that the inventory restoration is type-specific, preventing a "Suite" cancellation from accidentally increasing "Single" room counts.
+### 3. Shared Resource Management
+*   **Concurrency Control:** Effectively manages global objects shared between threads, ensuring that the system state remains consistent even under heavy parallel load.
 
 ---
 
 ## 🏗️ Architectural Benefits
-*   **Operational Consistency:** Guarantees that the system state (Inventory) always reflects the actual physical availability of the hotel.
-*   **Undo Capability:** The use of a Stack provides the foundational logic required for multi-level "Undo" operations in complex transactional systems.
-*   **Traceability:** Every cancellation creates a verifiable trail, essential for resolving customer disputes or performing system audits.
+*   **Scalability:** The system can now scale to handle hundreds of simultaneous requests by distributing the load across multiple processor threads.
+*   **Data Integrity:** Guarantees that the "Remaining Inventory" counts are always 100% accurate.
+*   **Performance:** Maximizes CPU utilization by processing reservations in parallel rather than sequentially.
 
 ---
 
-## 📊 Sample Output (As implemented)
-```text
-Booking Cancellation
-Booking cancelled successfully. Inventory restored for room type: Single
-
-Rollback History (Most Recent First):
-Released Reservation ID: Single-1
-
-Updated Single Room Availability: 6
+## 📊 Final Simulation Results
+As verified by the console output:
+1.  **Concurrent Execution:** Multiple threads (Thread-1, Thread-2) successfully processed the queue.
+2.  **Confirmed Bookings:** Reservations for Abhi, Vanmathi, Kural, and Subha were recorded.
+3.  **Inventory Integrity:** Final counts correctly reflected the decremented stock (e.g., Single: 3, Double: 2, Suite: 1).
