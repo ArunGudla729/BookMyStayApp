@@ -1,34 +1,19 @@
-# Use Case 11: Concurrent Booking Processing
+# Use Case 12: Data Persistence & System Recovery
 
-## 🎯 Project Goal
-The objective of Use Case 11 is to evolve the system into a **Multithreaded Architecture**. By simulating a high-traffic environment, this use case demonstrates how to handle multiple booking requests simultaneously while maintaining **Thread-Safety** to prevent overbooking.
+## 🎯 Goal
+The primary objective of Use Case 12 is to move beyond temporary in-memory storage to **File-based Persistence**. This ensures that room inventory data is preserved even after the application is closed or the system is restarted.
 
----
-
-## 🛠️ Key Components
-
-### 1. The `Runnable` Interface
-*   **Parallel Processing:** Implements `Runnable` in the `ConcurrentBookingProcessor` so that multiple worker threads can run the same logic independently.
-*   **Worker Threads:** Demonstrates the creation, starting, and joining of `Thread` objects to manage the application lifecycle.
-
-### 2. Thread Synchronization (`synchronized`)
-*   **Critical Sections:** Uses synchronized blocks to protect the shared `bookingQueue` and `RoomInventory`.
-*   **Race Condition Prevention:** Ensures that checking room availability and decrementing the count happens as one **Atomic Operation**, preventing two threads from claiming the same last room.
-
-### 3. Shared Resource Management
-*   **Concurrency Control:** Effectively manages global objects shared between threads, ensuring that the system state remains consistent even under heavy parallel load.
-
----
+## 🛠️ Key Features
+*   **System Recovery:** At startup, the system automatically checks for `inventory_state.txt`. If found, it bypasses default values and restores the exact counts from the previous session.
+*   **Data Persistence:** Every successful booking triggers an immediate update to the physical state file, guaranteeing that the "Source of Truth" is always current.
+*   **Error Resilience:** If the data file is missing or corrupted, the system performs a "Fresh Start" by initializing default inventory levels without crashing.
 
 ## 🏗️ Architectural Benefits
-*   **Scalability:** The system can now scale to handle hundreds of simultaneous requests by distributing the load across multiple processor threads.
-*   **Data Integrity:** Guarantees that the "Remaining Inventory" counts are always 100% accurate.
-*   **Performance:** Maximizes CPU utilization by processing reservations in parallel rather than sequentially.
+*   **Persistence Mindset:** Moves the application closer to real-world production standards where data durability is critical.
+*   **State Integrity:** Prevents the loss of inventory data due to power failure, maintenance, or application updates.
+*   **Foundation for Databases:** Establishes the logical pattern of Loading -> Processing -> Saving required for future integration with SQL or NoSQL databases.
 
----
-
-## 📊 Final Simulation Results
-As verified by the console output:
-1.  **Concurrent Execution:** Multiple threads (Thread-1, Thread-2) successfully processed the queue.
-2.  **Confirmed Bookings:** Reservations for Abhi, Vanmathi, Kural, and Subha were recorded.
-3.  **Inventory Integrity:** Final counts correctly reflected the decremented stock (e.g., Single: 3, Double: 2, Suite: 1).
+## 🚀 Execution Logic
+1.  **Bootstrapping:** The `PersistenceManager` attempts to load state from `inventory_state.txt`.
+2.  **State Reconstruction:** If the file exists, inventory counts are parsed and loaded into memory.
+3.  **Active Persistence:** As rooms are booked, the system calls `saveInventory()` to reflect changes on the disk.
