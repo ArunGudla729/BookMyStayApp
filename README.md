@@ -1,51 +1,43 @@
-# Use Case 8: Booking History & Reporting
+# Use Case 9: Error Handling & Validation
 
-## Project Goal
-The primary objective of this use case is to introduce **historical tracking** of confirmed bookings. This provides operational visibility for administrators, enables system audits, and supports reporting. It establishes a **persistence-oriented mindset** by treating in-memory data as long-lived information, preparing the system for future database integration.
-
----
-
-## Key Components
-
-
-| Component | Role |
-| :--- | :--- |
-| **Admin (Actor)** | Reviews booking history and reports for operational purposes. |
-| **Booking History** | Maintains a record of confirmed reservations using ordered storage. |
-| **Booking Report Service** | Generates summaries and formatted reports from stored data. |
+## 🎯 Goal
+The objective of Use Case 9 is to implement robust **Error Handling and Input Validation**. This ensures that only valid booking data enters the system and provides clear, domain-specific feedback to users when a booking fails.
 
 ---
 
-## Architectural Principles Applied
+## 🛠️ Key Components
 
-*   **Operational Visibility:** Provides insight into past transactions to understand system usage.
-*   **Ordered Storage:** Uses a `List<Reservation>` to preserve **insertion order**, ensuring a chronological record of events.
-*   **Separation of Concerns:** Data storage (`BookingHistory`) is decoupled from reporting logic (`BookingReportService`).
-*   **Persistence Mindset:** Although the data is stored in-memory, it is treated as an audit trail that persists throughout the application's lifecycle.
-*   **Reporting Readiness:** Structured data allows reports to be generated at any time without reprocessing live booking flows.
+### 1. Custom Exception: `InvalidBookingException`
+*   **Purpose:** A domain-specific exception class that extends `java.lang.Exception`.
+*   **Benefit:** Instead of using generic errors, this allows the system to identify and handle hotel-specific booking failures (e.g., empty names or invalid room types) distinctly.
 
----
+### 2. Centralized Validator: `ReservationValidator`
+*   **Responsibility:** Segregates validation logic from the main application flow.
+*   **Strict Rules:**
+    *   **Guest Name:** Must not be null or empty.
+    *   **Room Type:** Must match "Single", "Double", or "Suite" exactly (Case-Sensitive).
+*   **Action:** Throws an `InvalidBookingException` if any rule is violated.
 
-## How to Run
-
-1.  **Compile the code:**
-    ```bash
-    javac UseCase8BookingHistoryReport.java
-    ```
-2.  **Execute the application:**
-    ```bash
-    java UseCase8BookingHistoryReport
-    ```
+### 3. Professional Resource Management
+*   **Try-Catch-Finally:** The application uses a standard error-handling block to:
+    *   `try`: Execute the booking flow.
+    *   `catch`: Intercept and display specific validation error messages.
+    *   `finally`: Ensure the `Scanner` resource is closed to prevent memory leaks.
 
 ---
 
-## Sample Output
-As implemented in the final code, the system generates the following report:
+## 📊 Validation Scenarios
 
-```text
-Booking History and Reporting
 
-Booking History Report
-Guest: Abhi, Room Type: Single
-Guest: Subha, Room Type: Double
-Guest: Vanmathi, Room Type: Suite
+| Scenario | Input Name | Input Room Type | Expected Result |
+| :--- | :--- | :--- | :--- |
+| **Success** | `Abhisheak` | `Single` | `Booking processed successfully!` |
+| **Case Error** | `Abhisheak` | `single` | `Booking failed: Invalid room type selected.` |
+| **Empty Input** | ` ` | `Double` | `Booking failed: Guest name cannot be empty.` |
+
+---
+
+## 🏗️ Architectural Benefits
+*   **Data Integrity:** Prevents "dirty data" or incorrect room types from ever reaching the `BookingHistory`.
+*   **Robustness:** The system handles unexpected user input gracefully without crashing.
+*   **User Feedback:** Provides precise error messages, improving the user experience and auditability.
